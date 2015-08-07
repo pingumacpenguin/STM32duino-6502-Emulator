@@ -1,3 +1,4 @@
+#define BLINK_PIN PB0
 uint8_t curkey = 0;
 
 // Create USB serial_debug port
@@ -28,6 +29,18 @@ extern "C" {
 }
 
 void setup () {
+  /*
+  // Flash the LED 3 times to prove we rebooted.
+  pinMode(BLINK_PIN, OUTPUT);
+  for ( int i = 0; i = 2 ; i++)
+  {
+    digitalWrite(BLINK_PIN, LOW);
+    delay(1000);
+    digitalWrite(BLINK_PIN, HIGH);
+    delay(1000);
+  }
+  digitalWrite(BLINK_PIN, LOW);
+  */
   serial_debug.begin (9600);
   serial_debug.println ();
 
@@ -35,9 +48,16 @@ void setup () {
 }
 
 void loop () {
+
+
+
   exec6502(100); //if timing is enabled, this value is in 6502 clock ticks. otherwise, simply instruction count.
   if (serial_debug.available()) {
-    curkey = serial_debug.read() & 0x7F;
+    // curkey = serial_debug.read() & 0x7F;
+    curkey = serial_debug.read() ;
+    //digitalWrite(BLINK_PIN, LOW);
+    //delayMicroseconds(100);
+    //digitalWrite(BLINK_PIN, HIGH);
   }
 }
 

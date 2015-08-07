@@ -7,7 +7,10 @@ extern void serout(uint8_t value);
 
 #define NULL (void *) 0
 
-#define RAM_SIZE 16*1024
+// Maximum available ram is 20480 bytes on the STM32F103C8T6, so lets see how much we can actually use....
+#define RAM_SIZE 16*1024+256+128+64
+// "Global variables use 20,264 bytes of dynamic memory"  << If we declare any more, then the device locks up and/or the serial port doesn't enumerate.
+//  Could this be due to a misdeclaration of ram, some being taken up by init, but not accounted for,
 
 //6502 defines
 #define UNDOCUMENTED //when this is defined, undocumented opcodes are handled.
@@ -1719,7 +1722,7 @@ void irq6502() {
 }
 
 #ifdef USE_TIMING
-prog_char ticktable[256] PROGMEM = {
+const prog_char ticktable[256] = {
 /*        |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  A  |  B  |  C  |  D  |  E  |  F  |     */
 /* 0 */      7,    6,    2,    8,    3,    3,    5,    5,    3,    2,    2,    2,    4,    4,    6,    6,  /* 0 */
 /* 1 */      2,    5,    2,    8,    4,    4,    6,    6,    2,    4,    2,    7,    4,    4,    7,    7,  /* 1 */
